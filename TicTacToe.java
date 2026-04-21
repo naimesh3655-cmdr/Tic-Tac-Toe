@@ -1,21 +1,24 @@
+import java.util.Scanner;
+
 public class TicTacToe {
+
+    // Method to read slot input
+    public static int getPlayerMove() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a slot number (1-9): ");
+        int slot = sc.nextInt();
+
+        return slot;
+    }
+
     public static void main(String[] args) {
-        char[][] board = new char[3][3];
+        int move;
 
-        // Initialize the board with '-'
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = '-';
-            }
-        }
+        System.out.println("=== Tic-Tac-Toe UC3 ===");
 
-        // Display the empty Tic-Tac-Toe board
-        System.out.println("Tic-Tac-Toe Board");
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
-        }
+        move = getPlayerMove();
+
+        System.out.println("You selected slot: " + move);
     }
 }

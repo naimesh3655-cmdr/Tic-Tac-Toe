@@ -1,33 +1,36 @@
-import java.util.Scanner;
-
 public class TicTacToe {
 
-    // Method to get slot input
-    public static int getPlayerMove() {
-        Scanner sc = new Scanner(System.in);
+    // Method to validate move
+    public static boolean isValidMove(char[][] board, int row, int col) {
 
-        System.out.print("Enter slot number (1-9): ");
-        int slot = sc.nextInt();
+        // Check row and column bounds
+        if (row < 0 || row > 2 || col < 0 || col > 2) {
+            return false;
+        }
 
-        return slot;
-    }
+        // Check if cell is empty
+        if (board[row][col] != '-') {
+            return false;
+        }
 
-    // Method to convert slot into row and column
-    public static void convertSlot(int slot) {
-        int row = (slot - 1) / 3;
-        int col = (slot - 1) % 3;
-
-        System.out.println("Row Index: " + row);
-        System.out.println("Column Index: " + col);
+        return true;
     }
 
     public static void main(String[] args) {
-        int slot;
 
-        System.out.println("=== Tic-Tac-Toe UC4 ===");
+        char[][] board = {
+            {'-', '-', '-'},
+            {'-', 'X', '-'},
+            {'-', '-', '-'}
+        };
 
-        slot = getPlayerMove();
+        int row = 1;
+        int col = 1;
 
-        convertSlot(slot);
+        if (isValidMove(board, row, col)) {
+            System.out.println("Move Accepted");
+        } else {
+            System.out.println("Move Rejected");
+        }
     }
 }

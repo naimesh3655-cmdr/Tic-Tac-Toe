@@ -1,67 +1,130 @@
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-using namespace std;
+import java.util.Random;
+import java.util.Scanner;
 
-char board[3][3] = {
-    {'-', '-', '-'},
-    {'-', '-', '-'},
-    {'-', '-', '-'}
-};
+public class TicTacToe {
 
-// Method to place symbol on board
-void updateBoard(int row, int col, char symbol) {
-    board[row][col] = symbol;
-}
+    static char[][] board = {
+        {'-', '-', '-'},
+        {'-', '-', '-'},
+        {'-', '-', '-'}
+    };
 
-// Method to display board
-void displayBoard() {
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            cout << board[i][j] << " ";
+    // Display board
+    public static void displayBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
         }
-        cout << endl;
+        System.out.println();
     }
-}
 
-// Method to check valid move
-bool isValidMove(int row, int col) {
-    return board[row][col] == '-';
-}
+    // Update board
+    public static void updateBoard(int row, int col, char symbol) {
+        board[row][col] = symbol;
+    }
 
-// UC7: Computer random valid move
-void computerRandomMove() {
-    int slot, row, col;
+    // Check valid move
+    public static boolean isValidMove(int row, int col) {
+        return board[row][col] == '-';
+    }
 
-    do {
-        slot = rand() % 9 + 1;   // Generate slot 1–9
-        row = (slot - 1) / 3;
-        col = (slot - 1) % 3;
-    } while (!isValidMove(row, col));
+    // Computer random move
+    public static void computerRandomMove() {
+        Random random = new Random();
 
-    updateBoard(row, col, 'O');
-    cout << "Computer placed O in slot " << slot << endl;
-}
+        int slot, row, col;
 
-int main() {
-    srand(time(0));
+        do {
+            slot = random.nextInt(9) + 1;
+            row = (slot - 1) / 3;
+            col = (slot - 1) % 3;
+        } while (!isValidMove(row, col));
 
-    int row = 1;
-    int col = 1;
-    char symbol = 'X';
+        updateBoard(row, col, 'O');
+        System.out.println("Computer placed O in slot " + slot);
+    }
 
-    cout << "Before Player Move:" << endl;
-    displayBoard();
+    // Check win
+    public static boolean checkWin(char symbol) {
+        for (int i = 0; i < 3; i++) {
+            if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol)
+                return true;
 
-    updateBoard(row, col, symbol);
+            if (board[0][i] == symbol && board[1][i] == symbol && board[2][i] == symbol)
+                return true;
+        }
 
-    cout << "After Player Move:" << endl;
-    displayBoard();
+        if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol)
+            return true;
 
-    computerRandomMove();
+        if (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)
+            return true;
 
-    cout << "After Computer Move:" << endl;
-    displayBoard();
+        return false;
+    }
 
-    return 0;
+    // Check draw
+    public static boolean checkDraw() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == '-')
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        boolean gameOver = false;
+
+        while (!gameOver) {
+
+            displayBoard();
+
+            // Player move
+            System.out.print("Enter row and column (0-2): ");
+            int row = input.nextInt();
+            int col = input.nextInt();
+
+            if (isValidMove(row, col)) {
+
+                updateBoard(row, col, 'X');
+
+                if (checkWin('X')) {
+                    displayBoard();
+                    System.out.println("Player X wins!");
+                    gameOver = true;
+                }
+                else if (checkDraw()) {
+                    displayBoard();
+                    System.out.println("Game is a draw!");
+                    gameOver = true;
+                }
+                else {
+                    // Computer move
+                    computerRandomMove();
+
+                    if (checkWin('O')) {
+                        displayBoard();
+                        System.out.println("Computer wins!");
+                        gameOver = true;
+                    }
+                    else if (checkDraw()) {
+                        displayBoard();
+                        System.out.println("Game is a draw!");
+                        gameOver = true;
+                    }
+                }
+
+            } else {
+                System.out.println("Invalid move. Try again.");
+            }
+        }
+
+        input.close();
+    }
 }

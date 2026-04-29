@@ -1,67 +1,66 @@
-#include <iostream>
-#include <cstdlib>
-#include <ctime>
-using namespace std;
+import java.util.Random;
 
-char board[3][3] = {
-    {'-', '-', '-'},
-    {'-', '-', '-'},
-    {'-', '-', '-'}
-};
+public class TicTacToe {
 
-// Method to place symbol on board
-void updateBoard(int row, int col, char symbol) {
-    board[row][col] = symbol;
-}
-
-// Method to display board
-void displayBoard() {
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
-            cout << board[i][j] << " ";
-        }
-        cout << endl;
+    // Method to place symbol on board
+    public static void updateBoard(char[][] board, int row, int col, char symbol) {
+        board[row][col] = symbol;
     }
-}
 
-// Method to check valid move
-bool isValidMove(int row, int col) {
-    return board[row][col] == '-';
-}
+    // Method to display board
+    public static void displayBoard(char[][] board) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 
-// UC7: Computer random valid move
-void computerRandomMove() {
-    int slot, row, col;
+    // Method to check valid move
+    public static boolean isValidMove(char[][] board, int row, int col) {
+        return board[row][col] == '-';
+    }
 
-    do {
-        slot = rand() % 9 + 1;   // Generate slot 1–9
-        row = (slot - 1) / 3;
-        col = (slot - 1) % 3;
-    } while (!isValidMove(row, col));
+    // UC7: Computer random valid move
+    public static void computerRandomMove(char[][] board) {
+        Random random = new Random();
 
-    updateBoard(row, col, 'O');
-    cout << "Computer placed O in slot " << slot << endl;
-}
+        int slot, row, col;
 
-int main() {
-    srand(time(0));
+        do {
+            slot = random.nextInt(9) + 1; // Generate slot 1–9
+            row = (slot - 1) / 3;
+            col = (slot - 1) % 3;
+        } while (!isValidMove(board, row, col));
 
-    int row = 1;
-    int col = 1;
-    char symbol = 'X';
+        updateBoard(board, row, col, 'O');
+        System.out.println("Computer placed O in slot " + slot);
+    }
 
-    cout << "Before Player Move:" << endl;
-    displayBoard();
+    public static void main(String[] args) {
 
-    updateBoard(row, col, symbol);
+        char[][] board = {
+            {'-', '-', '-'},
+            {'-', '-', '-'},
+            {'-', '-', '-'}
+        };
 
-    cout << "After Player Move:" << endl;
-    displayBoard();
+        int row = 1;
+        int col = 1;
+        char symbol = 'X';
 
-    computerRandomMove();
+        System.out.println("Before Player Move:");
+        displayBoard(board);
 
-    cout << "After Computer Move:" << endl;
-    displayBoard();
+        updateBoard(board, row, col, symbol);
 
-    return 0;
+        System.out.println("After Player Move:");
+        displayBoard(board);
+
+        computerRandomMove(board);
+
+        System.out.println("After Computer Move:");
+        displayBoard(board);
+    }
 }

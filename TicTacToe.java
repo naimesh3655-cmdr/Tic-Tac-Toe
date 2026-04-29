@@ -1,21 +1,41 @@
-public class TicTacToe {
-    public static void main(String[] args) {
-        char[][] board = new char[3][3];
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
 
-        // Initialize the board with '-'
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = '-';
-            }
-        }
+char board[9] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
 
-        // Display the empty Tic-Tac-Toe board
-        System.out.println("Tic-Tac-Toe Board");
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
-        }
+void displayBoard() {
+    cout << endl;
+    for (int i = 0; i < 9; i += 3) {
+        cout << board[i] << " | " << board[i + 1] << " | " << board[i + 2] << endl;
+        if (i < 6)
+            cout << "--+---+--" << endl;
     }
+    cout << endl;
+}
+
+bool isValidMove(int slot) {
+    return slot >= 1 && slot <= 9 && board[slot - 1] == ' ';
+}
+
+void computerRandomMove() {
+    int slot;
+
+    do {
+        slot = rand() % 9 + 1;   // Generate random slot 1–9
+    } while (!isValidMove(slot)); // Loop until valid
+
+    board[slot - 1] = 'O';       // Place computer symbol
+    cout << "Computer placed O in slot " << slot << endl;
+}
+
+int main() {
+    srand(time(0)); // Seed random number generator
+
+    displayBoard();
+    computerRandomMove();
+    displayBoard();
+
+    return 0;
 }

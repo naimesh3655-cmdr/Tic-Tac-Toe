@@ -1,9 +1,12 @@
+import java.util.Random;
+import java.util.Scanner;
+
 public class TicTacToe {
 
     static char[][] board = {
-        {'X', 'X', 'X'},
-        {'-', 'O', '-'},
-        {'O', '-', 'O'}
+        {'-', '-', '-'},
+        {'-', '-', '-'},
+        {'-', '-', '-'}
     };
 
     // Display board
@@ -15,6 +18,32 @@ public class TicTacToe {
             System.out.println();
         }
         System.out.println();
+    }
+
+    // Update board
+    public static void updateBoard(int row, int col, char symbol) {
+        board[row][col] = symbol;
+    }
+
+    // Check valid move
+    public static boolean isValidMove(int row, int col) {
+        return board[row][col] == '-';
+    }
+
+    // Computer random move
+    public static void computerRandomMove() {
+        Random random = new Random();
+
+        int slot, row, col;
+
+        do {
+            slot = random.nextInt(9) + 1;
+            row = (slot - 1) / 3;
+            col = (slot - 1) % 3;
+        } while (!isValidMove(row, col));
+
+        updateBoard(row, col, 'O');
+        System.out.println("Computer placed O in slot " + slot);
     }
 
     // UC9: Detect winner
@@ -38,14 +67,13 @@ public class TicTacToe {
             }
         }
 
-        // Check main diagonal
+        // Check diagonals
         if (board[0][0] == symbol &&
             board[1][1] == symbol &&
             board[2][2] == symbol) {
             return true;
         }
 
-        // Check opposite diagonal
         if (board[0][2] == symbol &&
             board[1][1] == symbol &&
             board[2][0] == symbol) {
@@ -55,16 +83,67 @@ public class TicTacToe {
         return false;
     }
 
+    // Check draw
+    public static boolean checkDraw() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board[i][j] == '-')
+                    return false;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) {
 
-        displayBoard();
+        Scanner input = new Scanner(System.in);
+        boolean gameOver = false;
 
-        if (checkWin('X')) {
-            System.out.println("Player X wins!");
-        } else if (checkWin('O')) {
-            System.out.println("Player O wins!");
-        } else {
-            System.out.println("No winner yet.");
+        while (!gameOver) {
+
+            displayBoard();
+
+            // Player move
+            System.out.print("Enter row and column (0-2): ");
+            int row = input.nextInt();
+            int col = input.nextInt();
+
+            if (isValidMove(row, col)) {
+
+                updateBoard(row, col, 'X');
+
+                if (checkWin('X')) {
+                    displayBoard();
+                    System.out.println("Player X wins!");
+                    gameOver = true;
+                }
+                else if (checkDraw()) {
+                    displayBoard();
+                    System.out.println("Game is a draw!");
+                    gameOver = true;
+                }
+                else {
+
+                    // Computer move
+                    computerRandomMove();
+
+                    if (checkWin('O')) {
+                        displayBoard();
+                        System.out.println("Computer wins!");
+                        gameOver = true;
+                    }
+                    else if (checkDraw()) {
+                        displayBoard();
+                        System.out.println("Game is a draw!");
+                        gameOver = true;
+                    }
+                }
+
+            } else {
+                System.out.println("Invalid move. Try again.");
+            }
         }
+
+        input.close();
     }
 }

@@ -46,30 +46,39 @@ public class TicTacToe {
         System.out.println("Computer placed O in slot " + slot);
     }
 
-    // Check winner
+    // UC9: Detect winner
     public static boolean checkWin(char symbol) {
 
+        // Check rows
         for (int i = 0; i < 3; i++) {
             if (board[i][0] == symbol &&
                 board[i][1] == symbol &&
-                board[i][2] == symbol)
+                board[i][2] == symbol) {
                 return true;
-
-            if (board[0][i] == symbol &&
-                board[1][i] == symbol &&
-                board[2][i] == symbol)
-                return true;
+            }
         }
 
+        // Check columns
+        for (int j = 0; j < 3; j++) {
+            if (board[0][j] == symbol &&
+                board[1][j] == symbol &&
+                board[2][j] == symbol) {
+                return true;
+            }
+        }
+
+        // Check diagonals
         if (board[0][0] == symbol &&
             board[1][1] == symbol &&
-            board[2][2] == symbol)
+            board[2][2] == symbol) {
             return true;
+        }
 
         if (board[0][2] == symbol &&
             board[1][1] == symbol &&
-            board[2][0] == symbol)
+            board[2][0] == symbol) {
             return true;
+        }
 
         return false;
     }
@@ -81,18 +90,13 @@ public class TicTacToe {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-
                 if (board[i][j] == '-') {
                     emptyFound = true;
                 }
             }
         }
 
-        if (!emptyFound && !checkWin('X') && !checkWin('O')) {
-            return true;
-        }
-
-        return false;
+        return !emptyFound && !checkWin('X') && !checkWin('O');
     }
 
     public static void main(String[] args) {
@@ -147,4 +151,3 @@ public class TicTacToe {
 
         input.close();
     }
-}

@@ -1,38 +1,67 @@
-public class TicTacToe {
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
 
-    // Method to place symbol on board
-    public static void updateBoard(char[][] board, int row, int col, char symbol) {
-        board[row][col] = symbol;
-    }
+char board[3][3] = {
+    {'-', '-', '-'},
+    {'-', '-', '-'},
+    {'-', '-', '-'}
+};
 
-    // Method to display board
-    public static void displayBoard(char[][] board) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
+// Method to place symbol on board
+void updateBoard(int row, int col, char symbol) {
+    board[row][col] = symbol;
+}
+
+// Method to display board
+void displayBoard() {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            cout << board[i][j] << " ";
         }
+        cout << endl;
     }
+}
 
-    public static void main(String[] args) {
+// Method to check valid move
+bool isValidMove(int row, int col) {
+    return board[row][col] == '-';
+}
 
-        char[][] board = {
-            {'-', '-', '-'},
-            {'-', '-', '-'},
-            {'-', '-', '-'}
-        };
+// UC7: Computer random valid move
+void computerRandomMove() {
+    int slot, row, col;
 
-        int row = 1;
-        int col = 1;
-        char symbol = 'X';
+    do {
+        slot = rand() % 9 + 1;   // Generate slot 1–9
+        row = (slot - 1) / 3;
+        col = (slot - 1) % 3;
+    } while (!isValidMove(row, col));
 
-        System.out.println("Before Move:");
-        displayBoard(board);
+    updateBoard(row, col, 'O');
+    cout << "Computer placed O in slot " << slot << endl;
+}
 
-        updateBoard(board, row, col, symbol);
+int main() {
+    srand(time(0));
 
-        System.out.println("After Move:");
-        displayBoard(board);
-    }
+    int row = 1;
+    int col = 1;
+    char symbol = 'X';
+
+    cout << "Before Player Move:" << endl;
+    displayBoard();
+
+    updateBoard(row, col, symbol);
+
+    cout << "After Player Move:" << endl;
+    displayBoard();
+
+    computerRandomMove();
+
+    cout << "After Computer Move:" << endl;
+    displayBoard();
+
+    return 0;
 }

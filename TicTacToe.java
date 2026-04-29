@@ -83,15 +83,20 @@ public class TicTacToe {
         return false;
     }
 
-    // Check draw
+    // UC10: Check draw
     public static boolean checkDraw() {
+
+        boolean emptyFound = false;
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (board[i][j] == '-')
-                    return false;
+                if (board[i][j] == '-') {
+                    emptyFound = true;
+                }
             }
         }
-        return true;
+
+        return !emptyFound && !checkWin('X') && !checkWin('O');
     }
 
     public static void main(String[] args) {
@@ -146,4 +151,3 @@ public class TicTacToe {
 
         input.close();
     }
-}

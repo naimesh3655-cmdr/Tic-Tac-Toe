@@ -1,3 +1,6 @@
+import java.util.Random;
+import java.util.Scanner;
+
 public class TicTacToe {
 
     static char[][] board = {
@@ -15,6 +18,32 @@ public class TicTacToe {
             System.out.println();
         }
         System.out.println();
+    }
+
+    // Update board
+    public static void updateBoard(int row, int col, char symbol) {
+        board[row][col] = symbol;
+    }
+
+    // Check valid move
+    public static boolean isValidMove(int row, int col) {
+        return board[row][col] == '-';
+    }
+
+    // Computer random move
+    public static void computerRandomMove() {
+        Random random = new Random();
+
+        int slot, row, col;
+
+        do {
+            slot = random.nextInt(9) + 1;
+            row = (slot - 1) / 3;
+            col = (slot - 1) % 3;
+        } while (!isValidMove(row, col));
+
+        updateBoard(row, col, 'O');
+        System.out.println("Computer placed O in slot " + slot);
     }
 
     // Check win
@@ -48,38 +77,47 @@ public class TicTacToe {
     }
 
     public static void main(String[] args) {
-        java.util.Scanner input = new java.util.Scanner(System.in);
 
-        char currentPlayer = 'X';
+        Scanner input = new Scanner(System.in);
         boolean gameOver = false;
 
         while (!gameOver) {
 
             displayBoard();
 
-            System.out.println("Player " + currentPlayer + " turn");
+            // Player move
             System.out.print("Enter row and column (0-2): ");
-
             int row = input.nextInt();
             int col = input.nextInt();
 
-            if (board[row][col] == '-') {
+            if (isValidMove(row, col)) {
 
-                board[row][col] = currentPlayer;
+                updateBoard(row, col, 'X');
 
-                if (checkWin(currentPlayer)) {
+                if (checkWin('X')) {
                     displayBoard();
-                    System.out.println("Player " + currentPlayer + " wins!");
+                    System.out.println("Player X wins!");
                     gameOver = true;
-                } 
+                }
                 else if (checkDraw()) {
                     displayBoard();
                     System.out.println("Game is a draw!");
                     gameOver = true;
-                } 
+                }
                 else {
-                    // Switch turn
-                    currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+                    // Computer move
+                    computerRandomMove();
+
+                    if (checkWin('O')) {
+                        displayBoard();
+                        System.out.println("Computer wins!");
+                        gameOver = true;
+                    }
+                    else if (checkDraw()) {
+                        displayBoard();
+                        System.out.println("Game is a draw!");
+                        gameOver = true;
+                    }
                 }
 
             } else {
